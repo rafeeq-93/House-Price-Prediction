@@ -1,0 +1,50 @@
+<!-- templates/index.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>House Price Prediction</title>
+</head>
+<body>
+    <h1>House Price Prediction</h1>
+    <form id="predict-form">
+        <label for="avg_area_income">Avg. Area Income:</label>
+        <input type="number" step="any" id="avg_area_income" name="avg_area_income" required><br>
+
+        <label for="avg_area_house_age">Avg. Area House Age:</label>
+        <input type="number" step="any" id="avg_area_house_age" name="avg_area_house_age" required><br>
+
+        <label for="avg_area_rooms">Avg. Area Number of Rooms:</label>
+        <input type="number" step="any" id="avg_area_rooms" name="avg_area_rooms" required><br>
+
+        <label for="avg_area_bedrooms">Avg. Area Number of Bedrooms:</label>
+        <input type="number" step="any" id="avg_area_bedrooms" name="avg_area_bedrooms" required><br>
+
+        <label for="area_population">Area Population:</label>
+        <input type="number" step="any" id="area_population" name="area_population" required><br>
+
+        <button type="submit">Predict Price</button>
+    </form>
+    <p id="result"></p>
+
+    <script>
+        document.getElementById("predict-form").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            let formData = new FormData(this);
+
+            fetch("/predict", {
+                method: "POST",
+                body: new URLSearchParams(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("result").innerText = "Predicted Price: $" + data.price;
+            })
+            .catch(error => console.error("Error:", error));
+        });
+    </script>
+</body>
+</html>
